@@ -1,26 +1,60 @@
-@top Program { expression* }
+@top Program { Statement* }
 
-@skip { space | LineComment }
-
-expression {
-  Identifier |
-  String |
-  Boolean |
-  Application { "(" expression* ")" }
-}
+@skip { space+ | comment }
 
 @tokens {
-  Identifier { $[a-zA-Z_\-0-9]+ }
-
-  String { '"' (!["\\] | "\\" _)* '"' }
-
-  Boolean { "#t" | "#f" }
-
-  LineComment { ";" ![\n]* }
-
-  space { $[ \t\n\r]+ }
-
-  "(" ")"
+  identifier { std.asciiLetter+ }
+  keyword { "if" | "else" | "for" | "while" | "return" | "def" | "class" }
+  literal { number | string }
+  number { digit+ }
+  string { "\"" (~["\\] | "\\" .)* "\"" }
+  operator { "+" | "-" | "*" | "/" | "=" | "==" | "!=" | "<" | ">" | "<=" | ">=" }
+  punctuation { "(" | ")" | "{" | "}" | "[" | "]" | ";" | "," }
+  space { " " | "\t" | "\n" | "\r" }
+  comment { "//" (~[\n])* }
 }
 
-@detectDelim
+Statement {
+  Declaration | Expression | Block | IfStatement | WhileStatement | ForStatement | ReturnStatement
+}
+
+Declaration {
+  "def" identifier "=" Expression
+}
+
+Expression {
+  identifier "=" Expression |
+  Term (operator Term)*
+}
+
+Term {
+  identifier | literal | "(" Expression ")"
+}
+
+Block {
+  "{" Statement* "}"
+}
+
+IfStatement {
+  "if" "(" Expression ")" Block ("else" Block)?
+}
+
+WhileStatement {
+  "while" "(" Expression ")" Block
+}
+
+ForStatement {
+  "for" "(" Declaration ";" Expression ";" Expression ")" Block
+}
+
+ReturnStatement {
+  "return" Expression
+}
+
+Function {
+  "def" identifier "(" (identifier ("," identifier)*)? ")" Block
+}
+
+Class {
+  "class" identifier "{" (Declaration | Function)* "}"
+}
