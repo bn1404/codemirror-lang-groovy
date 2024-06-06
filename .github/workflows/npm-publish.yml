@@ -14,7 +14,6 @@ jobs:
         with:
           node-version: 18
       - run: yarn install
-      - run: yarn tsc
 
   publish-npm:
     needs: build
@@ -25,7 +24,6 @@ jobs:
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
-      - run: yarn tsc
       - run: yarn build
       - run: npm publish
         env:
