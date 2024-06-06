@@ -1,7 +1,7 @@
 {
-  "name": "codemirror-lang-EXAMPLE",
+  "name": "codemirror-lang-groovy",
   "version": "0.1.0",
-  "description": "EXAMPLE language support for CodeMirror",
+  "description": "Groovy language support for CodeMirror",
   "scripts": {
     "test": "mocha test/test.js",
     "prepare": "rollup -c"
@@ -16,7 +16,7 @@
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "@codemirror/language": "^6.0.0",
+    "@codemirror/language": "^6.10.2",
     "@lezer/highlight": "^1.0.0",
     "@lezer/lr": "^1.0.0"
   },
